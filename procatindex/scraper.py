@@ -19,12 +19,30 @@ def get_cats(db):
     response = requests.get('http://procatinator.com/js/application.js')
     response.raise_for_status()
 
+    inserted = 0
+    updated = 0
+    total = 0
+
     for line in response.content.split('\n'):
         if line.startswith('theCats.push'):
+            total += 1
+
             cat_data = parse_cat(line)
-            youtube_data = get_youtube_data(cat_data['youtube'])
-            print "Storing cat id %s in db" % cat_data['cat_id']
-            storage.store_cat(cat_data['cat_id'], youtube_data['title'], db=db)
+
+            try:
+                existing = storage.get_cat(cat_data['cat_id'], db=db)
+
+            except storage.NotFound:
+                youtube_data = get_youtube_data(cat_data['youtube'])
+
+                print "Inserting cat %s into db" % cat_data['cat_id']
+                storage.insert_cat(
+                        cat_data['cat_id'], youtube_data['title'], db=db)
+                inserted += 1
+
+    print "Inserted %s cats" % inserted
+    print "Updated %s cats" % updated
+    print "Processed %s total cats" % total
 
 
 def parse_cat(line):
