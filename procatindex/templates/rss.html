@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+<title>Procatindex</title>
+<description>Keeping track of all the cats on Procatinator.com</description>
+<link>http://procatindex.com</link>
+<lastBuildDate>Mon, 06 Sep 2010 00:01:00 +0000 </lastBuildDate>
+<pubDate>Mon, 06 Sep 2009 16:45:00 +0000 </pubDate>
+<ttl>3600</ttl>
+
+{% for cat in cats %}
+<item>
+<title>{{cat.id}}: {{cat.title}}</title>
+<description><a href="http://procatinator.com/?cat={{cat.id}}">{{cat.id}}: {{cat.title}}</a></description>
+<link>http://procatinator.com/?cat={{cat.id}}</link>
+<guid>procatinator-{{cat.id}}</guid>
+<pubDate>{{cat.created}}</pubDate>
+</item>
+{% endfor %}
+
+</channel>
+</rss>

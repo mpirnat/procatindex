@@ -71,7 +71,7 @@ def get_all_cats(db=None):
 
 
 def get_recent_cats(n, db=None):
-    sql = "select * from urls order by created desc limit %s" % n
+    sql = "select * from cats order by created desc limit %s" % n
     result = query_db(sql, [], db=db)
     return result
 

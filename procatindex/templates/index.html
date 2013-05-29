@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+    <title>Procatindex</title>
+</head>
+<body>
+    <h1>Procatindex</h1>
+    <h2>(buffering a list of cats)</h2>
+
+    <ol start="0">
+    {% for cat in cats %}
+    <li><a href="http://procatinator.com/?cat={{cat.id}}">{{cat.title}}</a></li>
+    {% endfor %}
+    </ol>
+</body>
+</html>

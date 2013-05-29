@@ -3,7 +3,7 @@ import requests
 import time
 
 from flask import Flask
-from procatindex.app import get_app
+from procatindex import get_app
 from procatindex import storage
 
 
