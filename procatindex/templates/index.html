@@ -7,9 +7,13 @@
     <h1>Procatindex</h1>
     <h2>(buffering a list of cats)</h2>
 
+    <p>There are {{count}} cats.</p>
+
+    <p>The most recent cat was added on {{cats[-1].created|datetimeformat("%A, %B %d, %Y")}}.</p>
+
     <ol start="0">
     {% for cat in cats %}
-    <li><a href="http://procatinator.com/?cat={{cat.id}}">{{cat.title}}</a></li>
+    <li><a href="{{cat.link}}">{{cat.title}}</a></li>
     {% endfor %}
     </ol>
 
