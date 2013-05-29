@@ -9,7 +9,9 @@
 
     <p>There are {{count}} cats.</p>
 
+    {% if cats %}
     <p>The most recent cat was added on {{cats[-1].created|datetimeformat("%A, %B %d, %Y")}}.</p>
+    {% endif %}
 
     <ol start="0">
     {% for cat in cats %}
