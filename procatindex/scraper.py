@@ -1,6 +1,9 @@
 import re
 import requests
 
+from procatindex import storage
+
+
 def get_cats():
     response = requests.get('http://procatinator.com/js/application.js')
     response.raise_for_status()
@@ -9,7 +12,7 @@ def get_cats():
         if line.startswith('theCats.push'):
             cat_data = parse_cat(line)
             youtube_data = get_youtube_data(cat_data['youtube'])
-            store_cat(cat_data['cat_id'], youtube_data['title'])
+            storage.store_cat(cat_data['cat_id'], youtube_data['title'])
 
 
 def parse_cat(line):
@@ -26,13 +29,3 @@ def get_youtube_data(video_id):
     response.raise_for_status()
     data = response.json()['data']
     return data
-
-
-def store_cat(cat_id, title):
-    try:
-        existing = storage.get_cat(cat_id)
-    except storage.NotFound:
-        insert_cat(cat_id, title)
-    else:
-        if existing['title'] != title:
-            storage.update_cat(cat_id, title)

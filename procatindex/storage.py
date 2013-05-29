@@ -69,7 +69,17 @@ def get_all_cats(db=None):
     return result
 
 
-def get_recent_cats(n, db):
+def get_recent_cats(n, db=None):
     sql = "select * from urls order by created desc limit %s" % n
     result = query_db(sql, [], db=db)
     return result
+
+
+def store_cat(cat_id, title, db=None):
+    try:
+        existing = get_cat(cat_id, db=db)
+    except NotFound:
+        insert_cat(cat_id, title, db=db)
+    else:
+        if existing['title'] != title:
+            update_cat(cat_id, title, db=db)
