@@ -1,3 +1,4 @@
+import datetime
 from flask import g
 from sqlite3 import dbapi2 as sqlite3
 
@@ -38,3 +39,37 @@ def query_db(query, args=(), one=False, db=None):
                 for row in cursor.fetchall()]
 
     return (result[0] if result else None) if one else result
+
+
+def get_cat(cat_id, db=None):
+    sql = "select id, title from cats where id = ?"
+    result = query_db(sql, [cat_id], one=True, db=db)
+    if not result:
+        raise NotFound()
+    return result
+
+
+def insert_cat(cat_id, title, db=None):
+    sql = "insert into cats(id, title, created) "\
+            "values(?, ?, ?)"
+    created = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.000")
+    query_db(sql, [cat_id, title, created], db=db)
+    db.commit()
+
+
+def update_cat(cat_id, title, db=None):
+    sql = "update cats set title = ? where id = ?"
+    query_db(sql, [title, cat_id], db=db)
+    db.commit()
+
+
+def get_all_cats(db=None):
+    sql = "select * from cats order by created asc"
+    result = query_db(sql, [], db=db)
+    return result
+
+
+def get_recent_cats(n, db):
+    sql = "select * from urls order by created desc limit %s" % n
+    result = query_db(sql, [], db=db)
+    return result
