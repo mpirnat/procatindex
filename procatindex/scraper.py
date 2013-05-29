@@ -7,7 +7,7 @@ from procatindex import storage
 
 
 def main():
-    app = get_app('scraper')
+    app = get_app()
     db = storage.connect_db(app)
     get_cats(db)
     db.close()
