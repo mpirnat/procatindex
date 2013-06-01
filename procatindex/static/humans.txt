@@ -1,0 +1,12 @@
+/* CREATOR */
+
+    Mike Pirnat: http://mike.pirnat.com
+
+
+/* THANKS */
+
+    Procatinator.com - the pinnacle of Internet greatness
+
+    Requests - Can't live without it; thanks, Kenneth!
+
+    Flask - Awesome for quick little website projects
