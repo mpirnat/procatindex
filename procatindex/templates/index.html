@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>:: procatindex ::</title>
+    <meta name="description" content="Procatindex is a list of all of Procatinator.com's cat GIF/music mashups" />
+
     <meta name="viewport" content="width=device-width" />
     <link rel="alternate" type="application/rss+xml" title="Procatindex (RSS 2.0)" href="http://procatindex.com/rss"/>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css" />
@@ -18,10 +20,10 @@
     </header>
 
     <section id="catmeta">
-        <p>There are {{count}} cats.</p>
+    <p>There are {{count}} cats on <a href="http://procatinator.com">Procatinator.</a></p>
 
         {% if cats %}
-        <p>The most recent cat was added on {{cats[-1].created|datetimeformat("%A, %B %d, %Y")}}.</p>
+        <p>The most recent cat was added to this list on {{cats[-1].created|datetimeformat("%A, %B %d, %Y")}}.</p>
     {% endif %}
 
         <p>Never miss a cat with the <a href="/rss">RSS feed</a>.</p>
@@ -38,8 +40,9 @@
     <footer>
         <p>Created in 2013 by <a href="http://mike.pirnat.com">Mike Pirnat</a>
         with love for <a href="http://procatinator.com">Procatinator.com</a> |
-        <a href="/rss">RSS Feed</a> |
-        Support me on <a href="https://www.gittip.com/mpirnat/">Gittip</a></p>
+        <a href="/rss">RSS Feed</a><br />
+        Support me on <a href="https://www.gittip.com/mpirnat/">Gittip</a> |
+        Support Procatinator by buying <a href="http://procatinator.spreadshirt.es" target="_blank">their stuff</a></p>
     </footer>
 
 <script>
