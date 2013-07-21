@@ -1,3 +1,4 @@
+import random
 import re
 import requests
 import time
@@ -76,7 +77,7 @@ def get_youtube_data(video_id):
     print "Getting data from youtube api..."
 
     # avoid getting 403ed by youtube
-    time.sleep(1)
+    time.sleep(1 + random.randint(0, 4))
 
     url = 'http://gdata.youtube.com/feeds/api/videos/' + video_id
     response = requests.get(url, params={'v': 2, 'alt': 'jsonc'})
