@@ -2,6 +2,7 @@ import re
 import requests
 import time
 
+from BeautifulSoup import BeautifulSoup
 from flask import Flask
 from procatindex import get_app
 from procatindex import storage
@@ -15,15 +16,14 @@ def main():
 
 
 def get_cats(db):
-    print "Getting data from procatinator..."
-    response = requests.get('http://procatinator.com/js/application.js')
-    response.raise_for_status()
 
     inserted = 0
     updated = 0
     total = 0
 
-    for line in response.content.split('\n'):
+    content = get_latest_application_js()
+
+    for line in content.split('\n'):
         if line.startswith('theCats.push'):
             total += 1
 
@@ -43,6 +43,24 @@ def get_cats(db):
     print "Inserted %s cats" % inserted
     print "Updated %s cats" % updated
     print "Processed %s total cats" % total
+
+
+def get_latest_application_js():
+    print "Getting data from procatinator..."
+
+    response = requests.get('http://procatinator.com')
+    soup = BeautifulSoup(response.content)
+    urls = [x['src'] for x in soup.findAll('script')
+            if x.has_key('src')
+            and '/application.js' in x['src']]
+    if not urls:
+        raise Exception("Couldn't find application.js link!")
+
+    url = 'http://procatinator.com' + urls[0]
+    response = requests.get(url)
+    response.raise_for_status()
+
+    return response.content
 
 
 def parse_cat(line):
