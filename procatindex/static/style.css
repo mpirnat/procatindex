@@ -14,6 +14,21 @@ h1 {
     left: -9999px;
 }
 
+#head-container {
+    position: fixed;
+    left: 0px;
+    top: 50px;
+    width: 30%;
+    height: 200px;
+    margin: 0px;
+    z-index: -5;
+}
+
+#head {
+    display: block;
+    margin: auto;
+}
+
 #catmeta {
     margin-top: 2em;
 }
@@ -56,6 +71,42 @@ footer {
     line-height: 1.5;
 }
 
+@media only screen and (max-width: 1200px) {
+
+    #head-container {
+        width: 26%;
+    }
+}
+
+@media only screen and (max-width: 1030px) {
+    #head-container {
+        width: 23%;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    #head {
+        height: 150px;
+        width: 150px;
+    }
+}
+
+@media only screen and (max-width: 925px) {
+    #head-container {
+        width: 20%;
+    }
+    #head {
+        height: 100px;
+        width: 100px;
+    }
+}
+
+@media only screen and (max-width: 870px) {
+    #head-container {
+        left: 65%;
+    }
+}
+
 @media only screen and (max-width: 767px) {
     #main {
         width: 73%;
@@ -71,5 +122,9 @@ footer {
 
     footer {
         font-size: 12pt;
+    }
+
+    #head-container {
+        left: 75%;
     }
 }

@@ -1,5 +1,6 @@
 import datetime
 from flask import g, request, session, abort, redirect, render_template
+from flask import send_from_directory
 from procatindex import get_app
 from procatindex.filters import register_filters
 from procatindex.model import Cat
@@ -33,6 +34,13 @@ def rss():
     now = datetime.datetime.utcnow()
     return render_template('rss.html', **locals())
 
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+            os.path.join(app.root_path, 'static'),
+                    'favicon.ico',
+                    mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     app.run()
