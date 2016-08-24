@@ -12,11 +12,11 @@ from procatindex import storage
 def main():
     app = get_app()
     db = storage.connect_db(app)
-    get_cats(db)
+    get_cats(db, app)
     db.close()
 
 
-def get_cats(db):
+def get_cats(db, app):
 
     inserted = 0
     updated = 0
@@ -24,8 +24,16 @@ def get_cats(db):
 
     content = get_latest_application_js()
 
+    youtube_api_key = app.config['YOUTUBE_API_KEY']
+
     for line in content.split('\n'):
         if line.startswith('theCats.push'):
+
+            # skip stupid commented-out turtles;
+            # don't even parse those jerks!
+            if '/images/turtles/' in line:
+                continue
+
             total += 1
 
             cat_data = parse_cat(line)
@@ -34,11 +42,14 @@ def get_cats(db):
                 existing = storage.get_cat(cat_data['cat_id'], db=db)
 
             except storage.NotFound:
-                youtube_data = get_youtube_data(cat_data['youtube'])
+                youtube_data = get_youtube_data(cat_data['youtube'],
+                        youtube_api_key)
 
                 print "Inserting cat %s into db" % cat_data['cat_id']
                 storage.insert_cat(
-                        cat_data['cat_id'], youtube_data['title'], db=db)
+                        cat_data['cat_id'],
+                        youtube_data['snippet']['title'],
+                        db=db)
                 inserted += 1
 
     print "Inserted %s cats" % inserted
@@ -73,17 +84,25 @@ def parse_cat(line):
     return match.groupdict()
 
 
-def get_youtube_data(video_id):
+def get_youtube_data(video_id, youtube_api_key):
     print "Getting data from youtube api..."
 
     # avoid getting 403ed by youtube
     time.sleep(1 + random.randint(0, 4))
 
-    url = 'http://gdata.youtube.com/feeds/api/videos/' + video_id
-    response = requests.get(url, params={'v': 2, 'alt': 'jsonc'})
+    url = 'https://www.googleapis.com/youtube/v3/videos'
+    params = {
+            'part': 'snippet',
+            'fields': 'items/snippet/title',
+            'id': video_id,
+            'key': youtube_api_key
+        }
+    response = requests.get(url, params={'part': 'snippet', 'id': video_id})
     response.raise_for_status()
-    data = response.json()['data']
-    return data
+    data = response.json().get('items', [])
+    if not data:
+        print "No results for video id " + video_id
+    return data[0]
 
 
 if __name__ == '__main__':
