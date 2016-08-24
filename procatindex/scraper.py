@@ -97,7 +97,7 @@ def get_youtube_data(video_id, youtube_api_key):
             'id': video_id,
             'key': youtube_api_key
         }
-    response = requests.get(url, params={'part': 'snippet', 'id': video_id})
+    response = requests.get(url, params=params)
     response.raise_for_status()
     data = response.json().get('items', [])
     if not data:
